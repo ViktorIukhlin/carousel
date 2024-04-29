@@ -1,1 +1,22 @@
-/* You can add global styles to this file, and also import other style files */
+html * {
+  color: white;
+  font-family: sans-serif;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+h5 {
+  margin: 0;
+}
+
+button {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font-size: inherit;
+  cursor: pointer;
+}
