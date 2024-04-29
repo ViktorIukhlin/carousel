@@ -54,6 +54,14 @@
   }
 }
 
+.seconds {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  color: white;
+  font-size: 24px;
+}
+
 .animate {
   transition-duration: 300ms;
 }

@@ -1,13 +1,21 @@
-import { Component, HostListener, Input, OnInit } from '@angular/core';
+import {
+  Component,
+  HostListener,
+  Input,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { ISlide } from './carousel.interface';
-import { Observable, Subject, interval } from 'rxjs';
+import { Subscription } from 'rxjs';
+import { TimerService } from '../../shared/timer.service';
+import { MarkupService } from '../../shared/markup.service';
 
 @Component({
   selector: 'carousel',
   templateUrl: './carousel.component.html',
   styleUrls: ['./carousel.component.scss'],
 })
-export class CarouselComponent implements OnInit {
+export class CarouselComponent implements OnInit, OnDestroy {
   @Input() public slides: ISlide[] = [];
 
   public normalizedSlides: ISlide[];
@@ -16,11 +24,18 @@ export class CarouselComponent implements OnInit {
   public currentSlide: number;
   public currentPosition: number;
 
-  private prevPosition: number;
-  private blockSwipe = false;
   public seconds: number = 0;
 
-  constructor() {}
+  private prevPosition: number;
+  private blockSwipe = false;
+
+  private timerSubscription: Subscription;
+  private automaticScrollingSeconds = 10;
+
+  constructor(
+    public timerService: TimerService,
+    public markupService: MarkupService
+  ) {}
 
   ngOnInit(): void {
     const length = this.slides.length;
@@ -42,7 +57,32 @@ export class CarouselComponent implements OnInit {
       this.currentPosition = -window.innerWidth;
 
       this.moveLastElementToBeginning();
+
+      // Timer functionality
+      this.timerService.startTimer();
+
+      this.timerSubscription = this.timerService.timer$.subscribe((seconds) => {
+        this.seconds = seconds;
+
+        if (seconds === this.automaticScrollingSeconds) {
+          // Activate the animation and reset the timer
+          this.handleAnimation();
+          this.currentPosition = -window.innerWidth * 2;
+          this.timerService.resetTimer();
+
+          // After the animation is over, we move the elements
+          setTimeout(() => {
+            this.moveFirstElementToEnd();
+            this.currentPosition = -window.innerWidth;
+          }, 300);
+        }
+      });
     }
+  }
+
+  ngOnDestroy() {
+    this.timerSubscription.unsubscribe();
+    this.timerService.stopTimer();
   }
 
   @HostListener('touchstart', ['$event'])
@@ -55,6 +95,8 @@ export class CarouselComponent implements OnInit {
   @HostListener('touchmove', ['$event'])
   onTouchMove(event: TouchEvent) {
     if (this.blockSwipe) return;
+
+    this.timerService.resetTimer();
 
     const userPosition = event.touches[0].clientX;
     const difference = Math.abs(this.prevPosition - userPosition);
@@ -93,16 +135,9 @@ export class CarouselComponent implements OnInit {
       const closestSlide = Math.round(this.currentPosition / window.innerWidth);
 
       // Activate animation at the moment of automatic scrolling
-      this.animationActive = true;
+      this.handleAnimation();
       // Move the closest slide to the border
       this.currentPosition = closestSlide * window.innerWidth;
-
-      // Turn off animation after 300ms
-      setTimeout(() => {
-        // TODO: I don’t think this is the optimal solution, there should be a way to calculate the exact time
-        // At least it doesn’t cause bugs or slowdowns
-        this.animationActive = false;
-      }, 300);
     }
   }
 
@@ -112,17 +147,8 @@ export class CarouselComponent implements OnInit {
 
   // This method is needed to add yellow highlighting to certain text
   // Or if we need to add new line to the text
-  // TODO: Should be in a separate service
   formatText(text: string) {
-    // Here we are trying to find all '\n' symbols and content inside these '** .... **' symbols
-    return text.replaceAll(/\\n|\*\*(.*?)\*\*/g, (_, coincidence) => {
-      // if this is a '** .... **' symbols then replace them with the span tag
-      if (coincidence) {
-        return `<span class="yellow">${coincidence}</span>`;
-      }
-      // if this is a '\n' symbols then return the <br /> tag instead
-      return '<br />';
-    });
+    return this.markupService.formatText(text);
   }
 
   private moveLastElementToBeginning(): void {
@@ -133,5 +159,17 @@ export class CarouselComponent implements OnInit {
   private moveFirstElementToEnd(): void {
     const firstElement = this.normalizedSlides.shift() as ISlide;
     this.normalizedSlides.push(firstElement);
+  }
+
+  private handleAnimation(): void {
+    // Activate animation at the moment of automatic scrolling
+    this.animationActive = true;
+
+    // Turn off animation after 300ms
+    setTimeout(() => {
+      // TODO: I don’t think this is the optimal solution, there should be a way to calculate the exact time
+      // At least it doesn’t cause bugs or slowdowns
+      this.animationActive = false;
+    }, 300);
   }
 }
