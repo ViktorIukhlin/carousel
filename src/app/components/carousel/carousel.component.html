@@ -1,0 +1,40 @@
+<!-- Wrapper -->
+<div
+  class="carousel"
+  (touchstart)="onTouchStart($event)"
+  (touchmove)="onTouchMove($event)"
+  (touchend)="onTouchEnd()"
+  [ngClass]="{ animate: animationActive }"
+  [ngStyle]="{
+    transform: 'translateX(' + currentPosition + 'px)'
+  }"
+>
+  <!-- Slide -->
+  <div
+    class="slide"
+    *ngFor="let slide of normalizedSlides; trackBy: trackBy"
+    [ngStyle]="{
+      backgroundImage: 'url(assets/' + slide.backgroundImage + ')',
+    }"
+  >
+    <!-- Main Image -->
+    <img
+      class="image"
+      src="assets/{{ slide.mainImage }}"
+      [alt]="slide.mainImage"
+    />
+
+    <!-- Title -->
+    <h5 class="title">{{ slide.title }}</h5>
+
+    <!-- Message / Text -->
+    <p class="message" [innerHTML]="formatText(slide.text)"></p>
+
+    <!-- Button  -->
+    <div class="button-container">
+      <button class="button" (click)="slide.button.action()">
+        {{ slide.button.text }}
+      </button>
+    </div>
+  </div>
+</div>

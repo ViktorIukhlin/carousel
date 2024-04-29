@@ -1,0 +1,59 @@
+.carousel {
+  display: flex;
+  // Prevent vertical scrolling while swiping
+  touch-action: pan-y;
+  -webkit-overflow-scrolling: touch;
+}
+
+.slide {
+  // Background image styles
+  background-size: cover;
+  background-position: center;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 100vw;
+  height: 100vh;
+  padding: 1rem;
+}
+
+.image {
+  max-width: 70%;
+  align-self: center;
+  margin-bottom: 1rem;
+}
+
+.title {
+  text-align: center;
+  font-size: 1.5rem;
+  letter-spacing: 0.01rem;
+}
+
+.message {
+  max-width: 280px;
+  text-align: center;
+  font-size: 0.8rem;
+  align-self: center;
+}
+
+.button-container {
+  display: grid;
+  place-items: center;
+}
+
+.button {
+  border: 2px solid white;
+  padding: 0.5rem 3rem;
+  border-radius: 9999px;
+  transition: background-color 0.1s ease;
+
+  &:active {
+    background-color: white;
+    color: black;
+  }
+}
+
+.animate {
+  transition-duration: 300ms;
+}
