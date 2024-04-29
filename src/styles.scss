@@ -6,6 +6,7 @@ html * {
 
 body {
   margin: 0;
+  overscroll-behavior: none;
 }
 
 h5 {
@@ -19,4 +20,8 @@ button {
   background: transparent;
   font-size: inherit;
   cursor: pointer;
+}
+
+.yellow {
+  color: yellow;
 }

@@ -1,15 +1,32 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { ISlide } from './components/carousel/carousel.interface';
+import { ComponentsModule } from './components/components.module';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
+  standalone: true,
+  imports: [ComponentsModule, RouterOutlet],
   styleUrl: './app.component.scss',
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
+  ngOnInit(): void {
+    // Hack for iOS Safari address bar scroll
+    if (
+      navigator.userAgent.match(/iPhone/i) ||
+      navigator.userAgent.match(/iPad/i)
+    ) {
+      // First we get the viewport height and we multiple it by 1% to get a value for a vh unit
+      const vh = window.innerHeight * 0.01;
+      // Then we set the value in the --vh custom property to the root of the document
+      document.documentElement.style.setProperty('--vh', `${vh}px`);
+    }
+  }
+
   public slides: ISlide[] = [
     {
+      id: 1,
       backgroundImage: 'winzup-bg-mob.webp',
       mainImage: 'winzup_mob.png',
       title: 'WinzUp Loyalty Program',
@@ -20,6 +37,7 @@ export class AppComponent {
       },
     },
     {
+      id: 2,
       backgroundImage: 'ValentinesFortuneDrops_mob-bg.png',
       mainImage: 'ValentinesFortuneDrops_mob-pic.png',
       title: "Valentine's Fortune Drops",
@@ -30,6 +48,7 @@ export class AppComponent {
       },
     },
     {
+      id: 3,
       backgroundImage: 'wheel-mob-bg.webp',
       mainImage: 'wheel-mob.png',
       title: 'Wheel of Winz',
