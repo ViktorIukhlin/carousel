@@ -1,5 +1,6 @@
 <!-- Wrapper -->
 <div
+  *ngIf="!loading"
   class="carousel"
   (touchstart)="onTouchStart($event)"
   (touchmove)="onTouchMove($event)"
@@ -38,5 +39,8 @@
     </div>
   </div>
 </div>
+<!-- Timer -->
+<div *ngIf="!loading" class="seconds">{{ seconds }}</div>
 
-<div class="seconds">{{ seconds }}</div>
+<!-- Spinner -->
+<img *ngIf="loading" src="assets/motion-blur.svg" alt="spinner" />

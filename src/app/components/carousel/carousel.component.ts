@@ -2,8 +2,8 @@ import {
   Component,
   HostListener,
   Input,
+  OnChanges,
   OnDestroy,
-  OnInit,
 } from '@angular/core';
 import { ISlide } from './carousel.interface';
 import { Subscription } from 'rxjs';
@@ -15,11 +15,12 @@ import { MarkupService } from '../../shared/markup.service';
   templateUrl: './carousel.component.html',
   styleUrls: ['./carousel.component.scss'],
 })
-export class CarouselComponent implements OnInit, OnDestroy {
+export class CarouselComponent implements OnChanges, OnDestroy {
   @Input() public slides: ISlide[] = [];
 
   public normalizedSlides: ISlide[];
 
+  public loading = true;
   public animationActive = false;
   public currentSlide: number;
   public currentPosition: number;
@@ -31,53 +32,15 @@ export class CarouselComponent implements OnInit, OnDestroy {
 
   private timerSubscription: Subscription;
   private automaticScrollingSeconds = 10;
+  private initialized = false;
 
   constructor(
     public timerService: TimerService,
     public markupService: MarkupService
   ) {}
 
-  ngOnInit(): void {
-    const length = this.slides.length;
-    this.currentSlide = 0;
-
-    this.normalizedSlides = this.slides;
-
-    // If we have only 1 slide, then we turn off the carousel functionality
-    if (length <= 1) {
-      this.blockSwipe = true;
-    } else {
-      // Not the best solution, but it covers a case with two slides
-      // TODO: Find a better solution
-      if (length === 2) {
-        this.normalizedSlides.push(this.slides[0], this.slides[1]);
-      }
-
-      // Start position
-      this.currentPosition = -window.innerWidth;
-
-      this.moveLastElementToBeginning();
-
-      // Timer functionality
-      this.timerService.startTimer();
-
-      this.timerSubscription = this.timerService.timer$.subscribe((seconds) => {
-        this.seconds = seconds;
-
-        if (seconds === this.automaticScrollingSeconds) {
-          // Activate the animation and reset the timer
-          this.handleAnimation();
-          this.currentPosition = -window.innerWidth * 2;
-          this.timerService.resetTimer();
-
-          // After the animation is over, we move the elements
-          setTimeout(() => {
-            this.moveFirstElementToEnd();
-            this.currentPosition = -window.innerWidth;
-          }, 300);
-        }
-      });
-    }
+  ngOnChanges(): void {
+    if (this.slides.length && !this.initialized) this.sliderInitialization();
   }
 
   ngOnDestroy() {
@@ -149,6 +112,52 @@ export class CarouselComponent implements OnInit, OnDestroy {
   // Or if we need to add new line to the text
   formatText(text: string) {
     return this.markupService.formatText(text);
+  }
+
+  private sliderInitialization(): void {
+    this.loading = false;
+    this.initialized = true;
+
+    const length = this.slides.length;
+    this.currentSlide = 0;
+
+    this.normalizedSlides = this.slides;
+
+    // If we have only 1 slide, then we turn off the carousel functionality
+    if (length <= 1) {
+      this.blockSwipe = true;
+    } else {
+      // Not the best solution, but it covers a case with two slides
+      // TODO: Find a better solution
+      if (length === 2) {
+        this.normalizedSlides.push(this.slides[0], this.slides[1]);
+      }
+
+      // Start position
+      this.currentPosition = -window.innerWidth;
+
+      this.moveLastElementToBeginning();
+
+      // Timer functionality
+      this.timerService.startTimer();
+
+      this.timerSubscription = this.timerService.timer$.subscribe((seconds) => {
+        this.seconds = seconds;
+
+        if (seconds === this.automaticScrollingSeconds) {
+          // Activate the animation and reset the timer
+          this.handleAnimation();
+          this.currentPosition = -window.innerWidth * 2;
+          this.timerService.resetTimer();
+
+          // After the animation is over, we move the elements
+          setTimeout(() => {
+            this.moveFirstElementToEnd();
+            this.currentPosition = -window.innerWidth;
+          }, 300);
+        }
+      });
+    }
   }
 
   private moveLastElementToBeginning(): void {
