@@ -26,9 +26,9 @@ export class CarouselComponent implements OnChanges, OnDestroy {
   public currentPosition: number;
 
   public seconds: number = 0;
+  public blockSwipe = false;
 
   private prevPosition: number;
-  private blockSwipe = false;
 
   private timerSubscription: Subscription;
   private automaticScrollingSeconds = 10;
