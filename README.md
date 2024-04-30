@@ -25,7 +25,7 @@ The main task of this homework was to create a carousel with three slides.
 **Optional:**
 - timer to change slides every 10 seconds ✅
 - prevent vertical scrolling while swiping ✅ (I've used - **touch-action: pan-y**, but there is still an option to swipe diagonally at the beginning ) 
-- simulate loading from API (Not sure, added spinner and loading state)
+- simulate loading from API ✅(Added spinner and loading state)
 
 **Additionally:**
 - added the ability to add more slides
