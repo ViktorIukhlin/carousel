@@ -39,7 +39,7 @@ The main task of this homework was to create a carousel with three slides.
 https://drive.google.com/file/d/1IFWHNx1oWsMcS1b5ranThM3xmQg991-u/view?usp=sharing
  
 **iOS real device** <br/>
-https://drive.google.com/file/d/1IFWHNx1oWsMcS1b5ranThM3xmQg991-u/view?usp=sharing
+https://drive.google.com/file/d/1-F0l4utQbPQOR1C-f8WxATa3qCE9xp8A/view?usp=sharing
 
 **Android real device** <br/>
 https://drive.google.com/file/d/18HmsuNgb_NsHTopcabACGKMboP1Kmugh/view?usp=sharing
