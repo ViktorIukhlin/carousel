@@ -6,22 +6,40 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
 
 ## Running unit tests
 
 Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
-## Running end-to-end tests
+## Main goal
+The main task of this homework was to create a carousel with three slides.
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+**Requirements:**
+- support mobile screens (<600px) only, no desktop ✅
+- one slide utilizes 100vw ✅
+- should be possible to change slides by swiping ✅
+- slides data should be abstracted, not hardcoded ✅
+- slide has background image, main image, title, text and button ✅
+- output: repository on github ✅
 
-## Further help
+**Optional:**
+- timer to change slides every 10 seconds ✅
+- prevent vertical scrolling while swiping ✅ (I've used - **touch-action: pan-y**, but there is still an option to swipe diagonally at the beginning ) 
+- simulate loading from API (Not sure, added spinner and loading state)
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+**Additionally:**
+- added the ability to add more slides
+- if there is one slide in the array, the carousel simply displays the slide without swiping
+- two slides also swipe without problems
+- added MarkupService service for highlighting part of the text in yellow and in the future for adding line breaks
+
+## How it works on different devices
+
+**Desctop mobile** <br/>
+https://drive.google.com/file/d/1IFWHNx1oWsMcS1b5ranThM3xmQg991-u/view?usp=sharing
+ 
+**iOS real device** <br/>
+https://drive.google.com/file/d/1IFWHNx1oWsMcS1b5ranThM3xmQg991-u/view?usp=sharing
+
+**Android real device** <br/>
+https://drive.google.com/file/d/18HmsuNgb_NsHTopcabACGKMboP1Kmugh/view?usp=sharing
