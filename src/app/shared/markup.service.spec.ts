@@ -7,7 +7,6 @@ describe('MarkupService', () => {
     const expectedOutput =
       'This is a test<span class="yellow">with multiple</span>lines';
     const actualOutput = markupService.formatText(input);
-    console.log('actualOutput', actualOutput);
     expect(actualOutput).toEqual(expectedOutput);
   });
 

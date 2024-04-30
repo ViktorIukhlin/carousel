@@ -14,53 +14,65 @@ import { Observable } from 'rxjs';
 export class AppComponent implements OnInit {
   public slides: ISlide[] = [];
   ngOnInit(): void {
-    setTimeout(() => {
-      this.slides = [
-        {
-          id: 1,
-          backgroundImage: 'winzup-bg-mob.webp',
-          mainImage: 'winzup_mob.png',
-          title: 'WinzUp Loyalty Program',
-          text: 'Get up to **35% in rewards:** daily rakeback, weekly cashback and level-up bonuses',
-          button: {
-            text: 'Join now',
-            action: () => {},
-          },
-        },
-        {
-          id: 2,
-          backgroundImage: 'ValentinesFortuneDrops_mob-bg.png',
-          mainImage: 'ValentinesFortuneDrops_mob-pic.png',
-          title: "Valentine's Fortune Drops",
-          text: 'Trigger random prizes and win a share of **€30,000**!',
-          button: {
-            text: 'Learn more',
-            action: () => {},
-          },
-        },
-        {
-          id: 3,
-          backgroundImage: 'wheel-mob-bg.webp',
-          mainImage: 'wheel-mob.png',
-          title: 'Wheel of Winz',
-          text: 'Spin the wheel to win up to **€15,000** weekly',
-          button: {
-            text: 'Spin now',
-            action: () => {},
-          },
-        },
-      ];
+    this.getSlides()
+      .then((slides) => {
+        this.slides = slides;
 
-      // Hack for iOS Safari address bar scroll
-      if (
-        navigator.userAgent.match(/iPhone/i) ||
-        navigator.userAgent.match(/iPad/i)
-      ) {
-        // First we get the viewport height and we multiple it by 1% to get a value for a vh unit
-        const vh = window.innerHeight * 0.01;
-        // Then we set the value in the --vh custom property to the root of the document
-        document.documentElement.style.setProperty('--vh', `${vh}px`);
-      }
-    }, 1500);
+        // Hack for iOS Safari address bar
+        if (
+          navigator.userAgent.match(/iPhone/i) ||
+          navigator.userAgent.match(/iPad/i)
+        ) {
+          // First we get the viewport height and we multiple it by 1% to get a value for a vh unit
+          const vh = window.innerHeight * 0.01;
+          // Then we set the value in the --vh custom property to the root of the document
+          document.documentElement.style.setProperty('--vh', `${vh}px`);
+        }
+      })
+      .catch((error) => error.log(error));
+  }
+
+  private getSlides(): Promise<ISlide[]> {
+    return new Promise((resolve) => {
+      setTimeout(
+        () =>
+          resolve([
+            {
+              id: 1,
+              backgroundImage: 'winzup-bg-mob.webp',
+              mainImage: 'winzup_mob.png',
+              title: 'WinzUp Loyalty Program',
+              text: 'Get up to **35% in rewards:** daily rakeback, weekly cashback and level-up bonuses',
+              button: {
+                text: 'Join now',
+                action: () => {},
+              },
+            },
+            {
+              id: 2,
+              backgroundImage: 'ValentinesFortuneDrops_mob-bg.png',
+              mainImage: 'ValentinesFortuneDrops_mob-pic.png',
+              title: "Valentine's Fortune Drops",
+              text: 'Trigger random prizes and win a share of **€30,000**!',
+              button: {
+                text: 'Learn more',
+                action: () => {},
+              },
+            },
+            {
+              id: 3,
+              backgroundImage: 'wheel-mob-bg.webp',
+              mainImage: 'wheel-mob.png',
+              title: 'Wheel of Winz',
+              text: 'Spin the wheel to win up to **€15,000** weekly',
+              button: {
+                text: 'Spin now',
+                action: () => {},
+              },
+            },
+          ]),
+        1500
+      );
+    });
   }
 }
