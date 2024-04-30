@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { ISlide } from './components/carousel/carousel.interface';
 import { ComponentsModule } from './components/components.module';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-root',
