@@ -79,13 +79,11 @@ export class CarouselComponent implements OnChanges, OnDestroy {
     // we will activate moving the first element forward and shifting the currentPosition to the starting point
     if (this.currentPosition < -window.innerWidth * 2) {
       this.moveFirstElementToEnd();
-      this.currentPosition = -window.innerWidth;
     }
 
     // The same action only in the other direction
     if (this.currentPosition > 0) {
       this.moveLastElementToBeginning();
-      this.currentPosition = -window.innerWidth;
     }
   }
 
@@ -134,8 +132,6 @@ export class CarouselComponent implements OnChanges, OnDestroy {
       }
 
       // Start position
-      this.currentPosition = -window.innerWidth;
-
       this.moveLastElementToBeginning();
 
       // Timer functionality
@@ -154,24 +150,37 @@ export class CarouselComponent implements OnChanges, OnDestroy {
   private handleAutomaticScroll(): void {
     // Activate the animation and reset the timer
     this.handleAnimation();
-    this.currentPosition = -window.innerWidth * 2;
-    this.timerService.resetTimer();
 
-    // After the animation is over, we move the elements
-    setTimeout(() => {
-      this.moveFirstElementToEnd();
+    if (this.currentPosition === -window.innerWidth * 2) {
+      this.timerService.seconds = this.automaticScrollingSeconds - 1;
+    } else {
+      this.timerService.resetTimer();
+    }
+
+    if (this.currentPosition === 0) {
       this.currentPosition = -window.innerWidth;
-    }, 300);
+    } else {
+      this.currentPosition = -window.innerWidth * 2;
+
+      // After the animation is over, we move the elements
+      setTimeout(() => {
+        this.moveFirstElementToEnd();
+      }, 300);
+    }
   }
 
   private moveLastElementToBeginning(): void {
     const lastElement = this.normalizedSlides.pop() as ISlide;
     this.normalizedSlides.unshift(lastElement);
+
+    this.currentPosition = -window.innerWidth;
   }
 
   private moveFirstElementToEnd(): void {
     const firstElement = this.normalizedSlides.shift() as ISlide;
     this.normalizedSlides.push(firstElement);
+
+    this.currentPosition = -window.innerWidth;
   }
 
   private handleAnimation(): void {
