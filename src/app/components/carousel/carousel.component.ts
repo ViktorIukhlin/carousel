@@ -145,19 +145,23 @@ export class CarouselComponent implements OnChanges, OnDestroy {
         this.seconds = seconds;
 
         if (seconds === this.automaticScrollingSeconds) {
-          // Activate the animation and reset the timer
-          this.handleAnimation();
-          this.currentPosition = -window.innerWidth * 2;
-          this.timerService.resetTimer();
-
-          // After the animation is over, we move the elements
-          setTimeout(() => {
-            this.moveFirstElementToEnd();
-            this.currentPosition = -window.innerWidth;
-          }, 300);
+          this.handleAutomaticScroll();
         }
       });
     }
+  }
+
+  private handleAutomaticScroll(): void {
+    // Activate the animation and reset the timer
+    this.handleAnimation();
+    this.currentPosition = -window.innerWidth * 2;
+    this.timerService.resetTimer();
+
+    // After the animation is over, we move the elements
+    setTimeout(() => {
+      this.moveFirstElementToEnd();
+      this.currentPosition = -window.innerWidth;
+    }, 300);
   }
 
   private moveLastElementToBeginning(): void {
