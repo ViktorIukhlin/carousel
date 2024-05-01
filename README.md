@@ -40,7 +40,7 @@ The main task of this homework was to create a carousel with three slides.
 
 ## How it works on different devices
 
-**Desctop mobile - Chrome** <br/>
+**Desktop mobile - Chrome** <br/>
 https://drive.google.com/file/d/1IFWHNx1oWsMcS1b5ranThM3xmQg991-u/view?usp=sharing
 
 **iOS real device - Safari** <br/>
